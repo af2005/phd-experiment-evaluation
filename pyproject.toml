@@ -1,0 +1,43 @@
+[tool.poetry]
+name = "figures"
+version = "0.1.0"
+description = ""
+authors = ["Alexander Franke <a.franke@posteo.de>"]
+
+[tool.poetry.dependencies]
+python = "^3.11,<3.13"
+jupyter = "^1.0.0"
+matplotlib = "^3.5.2"
+numpy = "^1.23.0"
+scipy = "^1.8.1"
+pandas = "^2.2.2"
+jupyterlab = "^4.1.8"
+black = {extras = ["jupyter"], version = "^24.4.2"}
+nbqa = "^1.8.5"
+isort = "^5.12.0"
+pyupgrade = "^3.15.0"
+blacken-docs = "^1.16.0"
+codespell = "^2.2.6"
+timple = "^0.1.8"
+pydantic = "^2.6.0"
+plotly = "^5.20.0"
+datashader = "^0.16.0"
+tikzplotlib = "^0.10.1"
+seaborn = "^0.13.2"
+qbstyles = "^0.1.4"
+mplcyberpunk = "^0.7.1"
+scienceplots = "^2.1.1"
+uncertainties = "^3.1.7"
+influxdb-client = "^1.43.0"
+gwinc = "^0.6.1"
+pykat = "^1.2.94"
+sympy = "^1.13.0"
+
+[tool.poetry.dev-dependencies]
+
+[tool.poetry.group.dev.dependencies]
+pre-commit = "^3.5.0"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
