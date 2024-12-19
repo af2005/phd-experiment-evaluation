@@ -99,9 +99,7 @@ class Calibration(influx.InfluxDataContainer):
 
         temperature = starting_temperature
         for _ in time_stamps[1:]:
-            heat = step_size * self.discommoding_cooling_power_by_temperature(
-                temperature
-            )
+            heat = step_size * self.discommoding_cooling_power_by_temperature(temperature)
             temperature -= heat / (TM.mass * si.specific_heat(temperature))
             temperatures.append(temperature)
             specific_heat_capacities.append(si.specific_heat(temperature))
@@ -143,9 +141,7 @@ class HighPressureCalibration(Calibration, ABC):
     def __init__(self):
         super().__init__()
         self.baserow_connection = baserow.Connector()
-        self.calibration_metadata = (
-            self.baserow_connection.pd_calibration_at_high_pressure()
-        )
+        self.calibration_metadata = self.baserow_connection.pd_calibration_at_high_pressure()
 
     @cached_property
     def _pd_calibration_data(self) -> Tuple[list[ufloat], list[ufloat], list[ufloat]]:
@@ -191,8 +187,7 @@ class HighPressureCalibration(Calibration, ABC):
                     frame_temperature_data.mean(),
                     umath.sqrt(
                         frame_temperature_data.std() ** 2
-                        + temp_sensor.systematical_error(frame_temperature_data.mean())
-                        ** 2
+                        + temp_sensor.systematical_error(frame_temperature_data.mean()) ** 2
                     ),
                     tag="Frame temperature (calibration)",
                 )
@@ -203,9 +198,7 @@ class HighPressureCalibration(Calibration, ABC):
                 pd_voltage_data.std(),
                 tag="Photodiode (calibration)",
             )
-            proportion_of_frame_temp_to_gas_temp = ufloat(
-                0.5, 0.01, tag="pd calibration gas temp"
-            )
+            proportion_of_frame_temp_to_gas_temp = ufloat(0.5, 0.01, tag="pd calibration gas temp")
             helium = Helium(
                 temperature=(
                     (1 - proportion_of_frame_temp_to_gas_temp) * mirror.temperature
@@ -268,9 +261,7 @@ class HighPressureCalibration(Calibration, ABC):
         ys = 1000 * self.discommoding_cooling_power_by_delta_temperature(
             tm_temperature=x + 8, frame_temperature=8
         )
-        ax.errorbar(
-            x=x, y=[y.nominal_value for y in ys], c="C1", label="Fit (with uncertainty)"
-        )
+        ax.errorbar(x=x, y=[y.nominal_value for y in ys], c="C1", label="Fit (with uncertainty)")
         ax.fill_between(
             x,
             y1=[y.nominal_value - y.std_dev for y in ys],
@@ -283,12 +274,8 @@ class HighPressureCalibration(Calibration, ABC):
         df["screw_temperature"] = self.screw_temperature(
             tm_temperature=df.index + 8, frame_temperature=8
         )
-        df["screw_heat_conductivity"] = materials.teflon.heat_conductivity(
-            df["screw_temperature"]
-        )
-        df["dis_powers"] = (
-            df["dis_powers_div_conductivity"] * df["screw_heat_conductivity"]
-        )
+        df["screw_heat_conductivity"] = materials.teflon.heat_conductivity(df["screw_temperature"])
+        df["dis_powers"] = df["dis_powers_div_conductivity"] * df["screw_heat_conductivity"]
         # plt.xlim(2, 25)
         # plt.ylim(2, 4)
         ax.errorbar(
@@ -429,9 +416,7 @@ class HighPressureCalibration(Calibration, ABC):
     ) -> Union[float, np.array]:
         fit_params, model, _ = self._fit_discommoding_cooling_power_by_deltatemperature
 
-        cooling_div_conductivty = model.fcn(
-            fit_params, (tm_temperature - frame_temperature)
-        )
+        cooling_div_conductivty = model.fcn(fit_params, (tm_temperature - frame_temperature))
 
         heat_conductivity = materials.teflon.heat_conductivity(
             self.screw_temperature(
@@ -448,12 +433,8 @@ class HighPressureCalibration(Calibration, ABC):
         """
         discommoding_calibrations = self.baserow_connection.discommoding_cooling_data()
 
-        discommoding_powers_div_conductivity = [
-            ufloat(0, 1e-9, tag="sensor heating base")
-        ]
-        temperatures = [
-            ufloat(0e-3, TM_SENSOR_SYSTEMATIC, tag="tm temp no gas, no laser")
-        ]
+        discommoding_powers_div_conductivity = [ufloat(0, 1e-9, tag="sensor heating base")]
+        temperatures = [ufloat(0e-3, TM_SENSOR_SYSTEMATIC, tag="tm temp no gas, no laser")]
         starts = ["manual"]
         heating_powers = [
             # self.base_heating
@@ -487,8 +468,7 @@ class HighPressureCalibration(Calibration, ABC):
                 frame_temperature.nominal_value,
                 umath.sqrt(
                     frame_temperature.std_dev**2
-                    + temp_sensor.systematical_error(frame_temperature.nominal_value)
-                    ** 2
+                    + temp_sensor.systematical_error(frame_temperature.nominal_value) ** 2
                 ),
                 tag="frame temperature sensor",
             )
@@ -573,17 +553,14 @@ class HighPressureCalibration(Calibration, ABC):
                 temperature=ufloat(
                     tm_data.mean(),
                     umath.sqrt(
-                        tm_data.std() ** 2
-                        + (temp_sensor.systematical_error(tm_data.mean())) ** 2
+                        tm_data.std() ** 2 + (temp_sensor.systematical_error(tm_data.mean())) ** 2
                     ),
                     tag="Temperature sensor Base Discommoding heating",
                 )
             )
             frame_temp = ufloat(
                 frame.mean(),
-                umath.sqrt(
-                    frame.std() ** 2 + temp_sensor.systematical_error(frame.mean()) ** 2
-                ),
+                umath.sqrt(frame.std() ** 2 + temp_sensor.systematical_error(frame.mean()) ** 2),
             )
 
             base_heatings.append(
@@ -660,8 +637,8 @@ class HighPressureCalibration(Calibration, ABC):
         plt.legend()
         # plt.xlim(-0.04,0)
         # plt.ylim(0,0.001)
-        xlabel = plt.xlabel("Photodiode Voltage (V)")
-        ylabel = plt.ylabel("Absorbed laser power (mW)")
+        plt.xlabel("Photodiode Voltage (V)")
+        plt.ylabel("Absorbed laser power (mW)")
         fig1.savefig(
             "figures/high-pressure-pd-calibration.pgf",
             backend="pgf",
@@ -689,14 +666,9 @@ class PowerMeterCalibration(Calibration, ABC):
     def relevant_measurement_data(measurement_data: pd.DataFrame):
         return measurement_data["photo_voltage"]
 
-    def discommoding_cooling_power(
-        self, measurement_data: pd.DataFrame
-    ) -> Union[float, ufloat]:
+    def discommoding_cooling_power(self, measurement_data: pd.DataFrame) -> Union[float, ufloat]:
         relevant_data = self.relevant_measurement_data(measurement_data)
-        return (
-            ufloat(abs(relevant_data.mean()), abs(relevant_data.mean()) * 0.1) * 0.192
-            - 1.17
-        )
+        return ufloat(abs(relevant_data.mean()), abs(relevant_data.mean()) * 0.1) * 0.192 - 1.17
 
     def __str__(self):
         return "Power Meter calibrated (large error)"

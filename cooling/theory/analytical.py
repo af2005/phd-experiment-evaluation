@@ -44,9 +44,7 @@ class AnalyticalModel:
         return (
             pressure
             * self.mirror.effective_surface
-            * math.sqrt(
-                2 * self.gas.mass / (math.pi * scipy.constants.k * self.gas.temperature)
-            )
+            * math.sqrt(2 * self.gas.mass / (math.pi * scipy.constants.k * self.gas.temperature))
         )
 
     def thermal_noise_viscous_damping(self, f):
@@ -64,17 +62,13 @@ class AnalyticalModel:
             * self.gas.temperature
             * self.damping_by_rate
             / (
-                self.mirror.mass**2
-                * (self.pendulum.omega_0**2 - (2 * const.pi * f) ** 2) ** 2
+                self.mirror.mass**2 * (self.pendulum.omega_0**2 - (2 * const.pi * f) ** 2) ** 2
                 + self.damping_by_rate**2 * (2 * np.pi * f) ** 2
             )
         )
 
     def psd(self, frequencies):
-        return (
-            np.sqrt(self.thermal_noise_viscous_damping(frequencies))
-            / self.cavity.length
-        )
+        return np.sqrt(self.thermal_noise_viscous_damping(frequencies)) / self.cavity.length
 
     def heat_transfer_molecular_flow(self, pressure):
         """

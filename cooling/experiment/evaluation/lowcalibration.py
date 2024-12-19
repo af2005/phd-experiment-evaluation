@@ -142,14 +142,10 @@ class LowPressureCalibration:
                 field=pd_field,
                 measurement=calibration["Influx Measurement Name"],
             ).data
-            temperature = ufloat(
-                temp_data[temp_field].mean(), temp_data[temp_field].std()
-            )
+            temperature = ufloat(temp_data[temp_field].mean(), temp_data[temp_field].std())
             photodiode = ufloat(pd_data[pd_field].mean(), pd_data[pd_field].std())
             print(calibration["Start"])
-            laser_power = self.discommoding_cooling_power_by_temperature(
-                temperature.nominal_value
-            )
+            laser_power = self.discommoding_cooling_power_by_temperature(temperature.nominal_value)
             starts.append(calibration["Start"])
             temperatures.append(temperature.nominal_value)
             laser_powers.append(laser_power.nominal_value)
@@ -195,16 +191,12 @@ class LowPressureCalibration:
         if -0.750 < voltage > 0.0:
             raise ValueError(f"Cannot predict laser power for {voltage} mV")
         popt, _ = self._fit_photo_voltage_to_discommoding_cooling_power
-        print(
-            f"{voltage * 1000} mV converts to {self.linear_function(voltage, *popt) * 1000} mW"
-        )
+        print(f"{voltage * 1000} mV converts to {self.linear_function(voltage, *popt) * 1000} mW")
         return self.linear_function(voltage, *popt)
 
     @property
     def cooldown_data_indexed_by_time(self) -> [pd.DataFrame]:
-        return [
-            self.evaluate_cooldown(cooldown_df.data) for cooldown_df in self.cooldowns
-        ]
+        return [self.evaluate_cooldown(cooldown_df.data) for cooldown_df in self.cooldowns]
 
     def evaluate_cooldown(self, df: pd.DataFrame) -> pd.DataFrame:
         # recalculate the index to not have date times but seconds starting from 0
@@ -213,9 +205,7 @@ class LowPressureCalibration:
         except KeyError as exc:
             print(f"{df}")
             raise KeyError(f"Key _time not found. Only have {df.columns}") from exc
-        df["seconds"] = (
-            pd.to_datetime(df.index.to_series()) - df.index[0]
-        ).dt.total_seconds()
+        df["seconds"] = (pd.to_datetime(df.index.to_series()) - df.index[0]).dt.total_seconds()
 
         df.set_index("seconds", inplace=True)
 
@@ -226,9 +216,7 @@ class LowPressureCalibration:
         except KeyError:
             df["_value"] = df["Temperature_Testmass_(K)"]
         if self.temperatures_need_correction:
-            df["_value"] = df["_value"].apply(
-                corrector.testmass_sensor.correct_temperature
-            )
+            df["_value"] = df["_value"].apply(corrector.testmass_sensor.correct_temperature)
         df["_value"] = df["_value"].rolling(60).mean()
 
         df["specific heat"] = si.specific_heat(df["_value"])

@@ -35,9 +35,7 @@ def plot_pfeiffer_relative_error():
     plt.ylim(0.1, 100)
     plt.xlabel("Pressure (mbar)")
     plt.ylabel("Systematic\nuncertainty (%)")
-    plt.gcf().set_size_inches(
-        helpers.figures.set_size()[0], helpers.figures.set_size()[1] / 2
-    )
+    plt.gcf().set_size_inches(helpers.figures.set_size()[0], helpers.figures.set_size()[1] / 2)
     plt.grid(which="major", axis="y", linestyle="--")
     plt.savefig("pfeiffer_error.pgf")
 

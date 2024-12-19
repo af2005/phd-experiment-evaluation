@@ -70,14 +70,10 @@ class ACMeasurement(influx.InfluxDataContainer):
                 tag="tm temp statistical",
             ),
         )
-        self.mirror.temperature -= ufloat(
-            36e-3, 36e-3, tag="silicon temperature (systematic)"
-        )
+        self.mirror.temperature -= ufloat(36e-3, 36e-3, tag="silicon temperature (systematic)")
         self.mirror.temperature += ufloat(
             0,
-            temp_sensor.systematical_error(
-                self.data["temperatures"]["testmass"].mean()
-            ),
+            temp_sensor.systematical_error(self.data["temperatures"]["testmass"].mean()),
             tag="tm temp systematical",
         )
         _, _, _, self.probability_pressure_stable, _ = scipy.stats.linregress(
@@ -212,9 +208,7 @@ class ACMeasurement(influx.InfluxDataContainer):
             temp_hot_surface=self.mirror.temperature,
             temp_cold_surface=self.frame.temperature,
         )
-        fmf_cooling = (
-            self.gas_cooling * viscous_cooling / abs(viscous_cooling - self.gas_cooling)
-        )
+        fmf_cooling = self.gas_cooling * viscous_cooling / abs(viscous_cooling - self.gas_cooling)
         # print(f"Viscous flow cooling of {viscous_cooling * 1000} mW ")
         # print(f"Fmf cooling of {fmf_cooling * 1000} mW ")
         # print(f"Gas cooling of {self.gas_cooling * 1000} mW")
@@ -225,9 +219,7 @@ class ACMeasurement(influx.InfluxDataContainer):
         # print(f"Pressure in on TM: {self.gas_in.pressure}")
 
         gas_cooling_power = self._gas_cooling_in_free_molecular_flow()
-        factor = (
-            (const.pi * self.gas_in.mass * self.frame.temperature) / (8 * const.k)
-        ) ** 0.5
+        factor = ((const.pi * self.gas_in.mass * self.frame.temperature) / (8 * const.k)) ** 0.5
 
         ac = (
             factor
@@ -245,14 +237,14 @@ class ACMeasurement(influx.InfluxDataContainer):
         # print(f"{self.frame.temperature=}")
         # print(f"Kn for alpha {ac}={self.knudsen_number(accommodation_coefficient=ac)}")
 
-        if (
-            8 < self.knudsen_number(accommodation_coefficient=ac)
-            and self.mirror.temperature > 8
-        ):
+        if 8 < self.knudsen_number(accommodation_coefficient=ac) and self.mirror.temperature > 8:
             # self.knudsen_number(accommodation_coefficient=ac)=}")
             return ac
         print(
-            f"rejecting {self.mirror.temperature} K because of Kn ={self.knudsen_number(accommodation_coefficient=ac)}"
+            f"rejecting {
+                self.mirror.temperature} K because of Kn ={
+                self.knudsen_number(
+                    accommodation_coefficient=ac)}"
         )
         return ufloat(0, 0)
 

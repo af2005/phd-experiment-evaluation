@@ -35,10 +35,7 @@ plt.plot(
 )
 plt.plot(
     xs,
-    [
-        Helium(temperature=x, pressure=2.5e-4 * 100).mean_free_path * 1000 / 2
-        for x in xs
-    ],
+    [Helium(temperature=x, pressure=2.5e-4 * 100).mean_free_path * 1000 / 2 for x in xs],
     label="2.5e-4 mbar",
 )
 plt.plot(

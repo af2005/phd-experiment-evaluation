@@ -41,15 +41,11 @@ class Cable:
         raise NotImplementedError
 
     def _heat_conductivity_spline(self):
-        return splrep(
-            x=self.given_conductivity_data[0], y=self.given_conductivity_data[1]
-        )
+        return splrep(x=self.given_conductivity_data[0], y=self.given_conductivity_data[1])
 
     def plot_heat_conductivity(self, start=4, stop=300):
         fitted_temps = np.linspace(start, stop)
-        fitted_conductivities = splev(
-            fitted_temps, tck=self._heat_conductivity_spline()
-        )
+        fitted_conductivities = splev(fitted_temps, tck=self._heat_conductivity_spline())
         plt.plot(fitted_temps, fitted_conductivities)
         plt.plot(*self.given_conductivity_data)
 
@@ -58,12 +54,7 @@ class Cable:
         return splev(self.temperature, tck=self._heat_conductivity_spline())
 
     def cooling(self, delta_temperature):
-        return (
-            self.heat_conductivity
-            * delta_temperature
-            * self.cross_sectional_area
-            / self.length
-        )
+        return self.heat_conductivity * delta_temperature * self.cross_sectional_area / self.length
 
 
 class CablePhosphorBronze(Cable):
@@ -109,16 +100,12 @@ class PointMass:
 
 class Frame(AccommodatingObject):
     def __init__(self, temperature, accommodation, mass):
-        super().__init__(
-            temperature=temperature, accommodation=accommodation, mass=mass
-        )
+        super().__init__(temperature=temperature, accommodation=accommodation, mass=mass)
 
 
 class Mirror(AccommodatingObject):
     def __init__(self, mass, density, temperature, accommodation, gas_hits_front):
-        super().__init__(
-            temperature=temperature, accommodation=accommodation, mass=mass
-        )
+        super().__init__(temperature=temperature, accommodation=accommodation, mass=mass)
         self.density = density
         self.current_position = 0
         self.velocity = 0
@@ -209,9 +196,7 @@ class CylindricalSiliconMirror(SiliconMirror):
 
     def probability_for_hit_on_side_surface(self):
         if self.gas_hits_front:
-            return self.surface_of_sides / (
-                self.surface_of_sides + self.surface_of_front_and_back
-            )
+            return self.surface_of_sides / (self.surface_of_sides + self.surface_of_front_and_back)
         return 1
 
     def probability_for_hit_on_front_or_surface(self):
@@ -260,9 +245,7 @@ class TestMass(CylindricalSiliconMirror):
 
     @property
     def radiation_power(self):
-        return (
-            0.4 * self.surface_total.n * const.Stefan_Boltzmann * (self.temperature**4)
-        )
+        return 0.4 * self.surface_total.n * const.Stefan_Boltzmann * (self.temperature**4)
 
     @cached_property
     def _calc_diameter(self):
@@ -304,10 +287,7 @@ class Holder:
     @property
     def inner_diameter(self):
         data = (
-            np.array(
-                [2.94, 2.92, 2.96, 2.935, 2.94, 2.97, 2.96, 2.94, 2.935, 2.94, 2.935]
-            )
-            * 1e-2
+            np.array([2.94, 2.92, 2.96, 2.935, 2.94, 2.97, 2.96, 2.94, 2.935, 2.94, 2.935]) * 1e-2
         )
         length_warm = ufloat(data.mean(), data.std(), tag="tm holder inner radius")
         length_cold = length_warm - copper.thermal_expansion(

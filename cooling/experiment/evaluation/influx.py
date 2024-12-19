@@ -41,9 +41,7 @@ def get_date(query):
     return api.query_data_frame(query)
 
 
-def get_data(
-    field, start, stop, measurement="live", second_correction=True
-) -> pd.DataFrame:
+def get_data(field, start, stop, measurement="live", second_correction=True) -> pd.DataFrame:
     print(f"Downloading {field} from influx {start=} and {stop=}")
     q = (
         f'from(bucket:"Helium Accommodation") '
@@ -123,9 +121,7 @@ class InfluxDataContainer:
     @property
     def filename(self):
         return (
-            (str(self.start) + str(self.stop) + str(self.field))
-            .replace("-", "")
-            .replace(":", "")
+            (str(self.start) + str(self.stop) + str(self.field)).replace("-", "").replace(":", "")
         )
 
     def _save_data_to_file(self):

@@ -1,5 +1,10 @@
-from helpers import figures
+"""
+Creates a test figure with the helpers.figures width and tests the pgf export
+"""
+
 import matplotlib.pyplot as plt
+
+from helpers import figures
 
 # Create some sample data
 x = range(10)

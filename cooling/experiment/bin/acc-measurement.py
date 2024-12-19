@@ -84,9 +84,7 @@ if __name__ == "__main__":
     colors = []
     annotations = []
     alphas = []
-    measurements = sorted(
-        measurements, key=lambda d: d.data["temperatures"]["testmass"].mean()
-    )
+    measurements = sorted(measurements, key=lambda d: d.data["temperatures"]["testmass"].mean())
     all_uncertainty_components = pd.DataFrame()
     laser_power_fluctations = []
 
@@ -151,9 +149,7 @@ if __name__ == "__main__":
             uncertainty_components["uncertainty source"] = uncertainty_components[
                 "error var"
             ].apply(lambda x: x.tag)
-            uncertainty_components = uncertainty_components.set_index(
-                "uncertainty source"
-            )
+            uncertainty_components = uncertainty_components.set_index("uncertainty source")
             uncertainty_components = uncertainty_components["variances"]
             uncertainty_components = uncertainty_components.groupby(level=0).sum()
             for variance in [
@@ -175,9 +171,7 @@ if __name__ == "__main__":
 
             print(uncertainty_components)
 
-            all_uncertainty_components[m.mirror.temperature.n] = (
-                uncertainty_components.T
-            )
+            all_uncertainty_components[m.mirror.temperature.n] = uncertainty_components.T
 
             if 19.63 < m.data["temperatures"]["testmass"].mean() < 19.64:
                 pd.concat([all_uncertainty_components, uncertainty_components], axis=0)

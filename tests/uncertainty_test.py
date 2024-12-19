@@ -1,3 +1,7 @@
+"""
+Tests the uncertainties module and how to export the error components individually
+"""
+
 from uncertainties import ufloat
 import numpy as np
 
@@ -5,10 +9,7 @@ a = ufloat(1, 0.1, tag="a")
 b = ufloat(1.2, 0.2, tag="b")
 a2 = a * 2
 b2 = a * 3 - b
-c = a**2 + b * a - b**2
 
-# (dc/da) = 2a +b
-# (dc/db) = -b
 dcda = 2 * a.nominal_value + b.nominal_value
 dcdb = a.nominal_value - 2 * b.nominal_value
 

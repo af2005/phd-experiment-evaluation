@@ -56,9 +56,7 @@ class Cernox1070:
         if resistance < 100e3:
             return 100e-9
 
-    def excitation_current(
-        self, resistance: Union[PositiveFloat, Iterable[PositiveFloat]]
-    ):
+    def excitation_current(self, resistance: Union[PositiveFloat, Iterable[PositiveFloat]]):
         try:
             return self._excitation_current(resistance)
         except ValueError:
@@ -74,9 +72,7 @@ class Cernox1070:
     def _interpolate_controller_calibration(data: pd.DataFrame):
         return interpolate.interp1d(data["Temperature"], data["Units"])
 
-    def temperature(
-        self, log_resistence: Union[float, np.array]
-    ) -> Union[float, np.array]:
+    def temperature(self, log_resistence: Union[float, np.array]) -> Union[float, np.array]:
         if isinstance(log_resistence, float):
             log_resistence = [log_resistence]
 
@@ -99,15 +95,11 @@ class Cernox1070:
             return output[0]
         return np.array(output)
 
-    def controller_temp_to_logresistence(
-        self, temperature: Union[float, Iterable[float]]
-    ):
+    def controller_temp_to_logresistence(self, temperature: Union[float, Iterable[float]]):
         return self._controller_calibration(temperature)
 
     def correct_temperature(self, controller_temperature):
-        return self.temperature(
-            self.controller_temp_to_logresistence(controller_temperature)
-        )
+        return self.temperature(self.controller_temp_to_logresistence(controller_temperature))
 
 
 try:
@@ -119,9 +111,7 @@ try:
         index_col="No.",
     )
     holder_data = (
-        pd.read_csv(
-            "experiment/lakeshore/X166410.csv", header=6, index_col="No.", sep="\s+"
-        ),
+        pd.read_csv("experiment/lakeshore/X166410.csv", header=6, index_col="No.", sep="\s+"),
     )
 except FileNotFoundError:
     tm_data = pd.read_csv("X166120.csv", index_col="No.")
@@ -278,16 +268,12 @@ class SecondaryCorrector:
             second_correction=False,
         ).data
         times_holver = [
-            datetime.datetime.timestamp(time) * 1000
-            for time in temperature_holver["_time"]
+            datetime.datetime.timestamp(time) * 1000 for time in temperature_holver["_time"]
         ]
         times_steel = [
-            datetime.datetime.timestamp(time) * 1000
-            for time in temperature_steel["_time"]
+            datetime.datetime.timestamp(time) * 1000 for time in temperature_steel["_time"]
         ]
-        times_tm = [
-            datetime.datetime.timestamp(time) * 1000 for time in temperature_tm["_time"]
-        ]
+        times_tm = [datetime.datetime.timestamp(time) * 1000 for time in temperature_tm["_time"]]
 
         temperature_holver_interpolated = interpolate.interp1d(
             times_holver,
@@ -301,11 +287,7 @@ class SecondaryCorrector:
         )
 
         correct_tm_temp_data = [
-            (
-                temperature_holver_interpolated(time)
-                + temperature_steel_interpolated(time)
-            )
-            / 2
+            (temperature_holver_interpolated(time) + temperature_steel_interpolated(time)) / 2
             for time in times_tm
         ]
         return interpolate.interp1d(
@@ -361,7 +343,7 @@ def plot_test_mass_sensor_characteristics():
     axes.text(x=30, y=12, s="Current (μA)", c="C1")
     axes.text(x=30, y=3.5, s="Voltage (mA)", c="C2")
     axes.text(x=30, y=32, s="Self heating (nW)", c="C3")
-    x_axis_label = axes.set_xlabel("Temperature (K)")
+    axes.set_xlabel("Temperature (K)")
 
     fig1.savefig(
         "figures/tm_sensor_heating.pgf",

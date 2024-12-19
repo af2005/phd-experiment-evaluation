@@ -25,9 +25,7 @@ def specific_heat(temperature) -> Union[Iterable[ufloat], ufloat]:
     h = 0.051574
     i = 0
     specific_heat_value = models.log_polynome(temperature, (a, b, c, d, e, f, g, h, i))
-    return ufloat(
-        specific_heat_value, 0.03 * specific_heat_value, tag="Specific heat Polyimide"
-    )
+    return ufloat(specific_heat_value, 0.03 * specific_heat_value, tag="Specific heat Polyimide")
 
 
 def heat_conductivity(temperature) -> Union[Iterable[ufloat], ufloat]:
@@ -52,9 +50,7 @@ def heat_conductivity(temperature) -> Union[Iterable[ufloat], ufloat]:
 
     conductivity_value = models.log_polynome(temperature, (a, b, c, d, e, f, g, h, i))
 
-    return ufloat(
-        conductivity_value, 0.02 * conductivity_value, tag="Heat conductivity Polyimide"
-    )
+    return ufloat(conductivity_value, 0.02 * conductivity_value, tag="Heat conductivity Polyimide")
 
 
 if __name__ == "__main__":

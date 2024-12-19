@@ -67,11 +67,7 @@ class Maxwell3D(scipy.stats.rv_continuous):
     def _pdf(self, x, *args):
         if x < 0:
             return 0.0
-        return (
-            x**3
-            / (2 * self.characteristic_thermal_velocity**4)
-            * np.exp(-(x**2) / self.b)
-        )
+        return x**3 / (2 * self.characteristic_thermal_velocity**4) * np.exp(-(x**2) / self.b)
 
     def _cdf(self, x, *args):
         if x < 0:

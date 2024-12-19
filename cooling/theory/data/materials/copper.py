@@ -10,6 +10,4 @@ def thermal_expansion(temperature):
     """
     if 4 <= temperature <= 300:
         return (11.32 + 3.933e-2 * temperature - 7.306e-5 * temperature**2) * 1e-6
-    raise ArithmeticError(
-        f"Cannot calculate thermal expansion of copper for {temperature} K"
-    )
+    raise ArithmeticError(f"Cannot calculate thermal expansion of copper for {temperature} K")

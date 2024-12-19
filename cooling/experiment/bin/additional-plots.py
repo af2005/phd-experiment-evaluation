@@ -15,9 +15,7 @@ plot_test_mass_sensor_characteristics()
 
 
 tm = objects.TestMass(temperature=ufloat(7.433346902194525, 0.0008770416849788866))
-frame = objects.ThermalObject(
-    temperature=ufloat(7.402210960829073, 0.0011485584713561746)
-)
+frame = objects.ThermalObject(temperature=ufloat(7.402210960829073, 0.0011485584713561746))
 he = gas.Helium(temperature=(tm.temperature + frame.temperature) / 2)
 print(
     f"visc at base={1000*he.viscous_flow_cooling(surface=tm.surface_total, distance=tm.distance_to_frame, temp_hot_surface=tm.temperature, temp_cold_surface=frame.temperature)}"

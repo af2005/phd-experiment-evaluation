@@ -17,7 +17,6 @@ class Polyamide:
         f = 1.6324
         g = -0.2507
         h = 0.0131
-        I = 0
         logT = lg(temperature)
         log_k = (
             a

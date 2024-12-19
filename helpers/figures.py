@@ -81,9 +81,7 @@ def set_size(fraction=1, subplots=(1, 1)) -> tuple[float, float]:
 
     text_lines = inches_per_pt * 28
     # Figure height in inches
-    fig_height_in = text_lines + fig_width_in * golden_ratio * (
-        subplots[0] / subplots[1]
-    )
+    fig_height_in = text_lines + fig_width_in * golden_ratio * (subplots[0] / subplots[1])
 
     return fig_width_in, fig_height_in
 
@@ -129,6 +127,4 @@ class Multiple:
         return plt.MultipleLocator(self.number / self.denominator)
 
     def formatter(self):
-        return plt.FuncFormatter(
-            multiple_formatter(self.denominator, self.number, self.latex)
-        )
+        return plt.FuncFormatter(multiple_formatter(self.denominator, self.number, self.latex))

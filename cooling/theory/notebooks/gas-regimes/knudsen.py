@@ -17,35 +17,23 @@ print(f"Knudsen number: {1000*he.mean_free_path/2}")
 xs = np.linspace(5, 100, num=50)
 plt.plot(
     xs,
-    [
-        gas.Helium(temperature=x, pressure=1e-4 * 100).mean_free_path * 1000 / 2
-        for x in xs
-    ],
+    [gas.Helium(temperature=x, pressure=1e-4 * 100).mean_free_path * 1000 / 2 for x in xs],
     label="$10^{-4}$ mbar",
 )
 
 plt.plot(
     xs,
-    [
-        gas.Helium(temperature=x, pressure=1e-3 * 100).mean_free_path * 1000 / 2
-        for x in xs
-    ],
+    [gas.Helium(temperature=x, pressure=1e-3 * 100).mean_free_path * 1000 / 2 for x in xs],
     label="$10^{-3}$ mbar",
 )
 plt.plot(
     xs,
-    [
-        gas.Helium(temperature=x, pressure=1e-2 * 100).mean_free_path * 1000 / 2
-        for x in xs
-    ],
+    [gas.Helium(temperature=x, pressure=1e-2 * 100).mean_free_path * 1000 / 2 for x in xs],
     label="$10^{-2}$ mbar",
 )
 plt.plot(
     xs,
-    [
-        gas.Helium(temperature=x, pressure=1e-1 * 100).mean_free_path * 1000 / 2
-        for x in xs
-    ],
+    [gas.Helium(temperature=x, pressure=1e-1 * 100).mean_free_path * 1000 / 2 for x in xs],
     label="$10^{-1}$ mbar",
 )
 # plt.axhspan(1, 10, facecolor="0.2", alpha=0.1)

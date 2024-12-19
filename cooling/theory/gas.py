@@ -60,9 +60,7 @@ class GasCooling:
     def molecular_flow_cooling(self):
         return (
             self.alpha
-            * umath.sqrt(
-                8 * const.k / (const.pi * self.gas.mass * self.temperature_cold)
-            )
+            * umath.sqrt(8 * const.k / (const.pi * self.gas.mass * self.temperature_cold))
             * self.gas.pressure
             * self.area
             * (self.temperature_hot - self.temperature_cold)

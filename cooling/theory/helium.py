@@ -95,23 +95,16 @@ class Helium(gas.Gas):
         :return: Cooling power in Watt
         """
         return (
-            self.thermal_conductivity
-            * surface
-            * (temp_hot_surface - temp_cold_surface)
-            / distance
+            self.thermal_conductivity * surface * (temp_hot_surface - temp_cold_surface) / distance
         )
 
     @staticmethod
-    def pressure_correction_transitional_flow(
-        pressure_warm, diameter_tube, temp_warm, temp_cold
-    ):
+    def pressure_correction_transitional_flow(pressure_warm, diameter_tube, temp_warm, temp_cold):
         A = 6.11
         B = 4.26
         C = 0.52
         X = 2 * diameter_tube * pressure_warm / (temp_warm + temp_cold)
 
         return pressure_warm * (
-            1
-            + (umath.sqrt(temp_cold / temp_warm) - 1)
-            / (A * X**2 + B * X + C * umath.sqrt(X) + 1)
+            1 + (umath.sqrt(temp_cold / temp_warm) - 1) / (A * X**2 + B * X + C * umath.sqrt(X) + 1)
         )
