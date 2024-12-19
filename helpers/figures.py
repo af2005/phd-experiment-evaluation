@@ -48,8 +48,8 @@ def initialize():
         "text.usetex": True,  # use inline math for ticks
         "pgf.rcfonts": True,  # don't setup fonts from rc parameters
         "pgf.preamble": r"\usepackage{unicode-math}"  # unicode math setup
-                        r"\renewcommand*\familydefault{\sfdefault}"
-                        r"\renewcommand*\mathdefault{\mathsf}",
+        r"\renewcommand*\familydefault{\sfdefault}"
+        r"\renewcommand*\mathdefault{\mathsf}",
     }
     matplotlib.rcParams.update(pgf_with_custom_preamble)
 
@@ -74,7 +74,7 @@ def set_size(fraction=1, subplots=(1, 1)) -> tuple[float, float]:
     inches_per_pt = 1 / 72.27
 
     # Golden ratio to set aesthetic figure height
-    golden_ratio = (5 ** 0.5 - 1) / 2
+    golden_ratio = (5**0.5 - 1) / 2
 
     # Figure width in inches
     fig_width_in = fig_width_pt * inches_per_pt  # plus one for left overflow
@@ -82,7 +82,7 @@ def set_size(fraction=1, subplots=(1, 1)) -> tuple[float, float]:
     text_lines = inches_per_pt * 28
     # Figure height in inches
     fig_height_in = text_lines + fig_width_in * golden_ratio * (
-            subplots[0] / subplots[1]
+        subplots[0] / subplots[1]
     )
 
     return fig_width_in, fig_height_in
