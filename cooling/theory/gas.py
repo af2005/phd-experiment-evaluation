@@ -27,10 +27,16 @@ class Gas(abc.ABC):
         self.pressure = pressure
 
     def mean_velocity(self):
+        """
+        return the mean velocity of the gas according to the Maxwell Boltzmann distribution
+        """
         return math.sqrt(8 * const.k * self.temperature / (self.mass * math.pi))
 
     @property
     def mean_free_path(self) -> float:
+        """
+        return the mean free path of the gas
+        """
         return (
             const.k
             * self.temperature
@@ -39,6 +45,9 @@ class Gas(abc.ABC):
 
     @property
     def thermal_conductivity(self):
+        """
+        return the thermal conductivity of the gas in viscous flow.
+        """
         raise NotImplementedError
 
 
@@ -58,6 +67,10 @@ class GasCooling:
         self.area = area
 
     def molecular_flow_cooling(self):
+        """
+        return the molecular flow cooling of the gas according to our publication
+        gas cooling of test masses for future gravitational wave detectors
+        """
         return (
             self.alpha
             * umath.sqrt(8 * const.k / (const.pi * self.gas.mass * self.temperature_cold))
@@ -67,6 +80,9 @@ class GasCooling:
         )
 
     def viscous_cooling(self):
+        """
+        return cooling power according to thermal conductivity
+        """
         raise NotImplementedError
 
     def transitional_cooling(self):

@@ -17,6 +17,10 @@ from .. import influx as influx
 
 
 class Cernox1070:
+    """
+    Apply the calibration data to the voltage output of a Cernox 1070 temperature sensor.
+    """
+
     def __init__(
         self,
         serial_number: str,
@@ -63,6 +67,9 @@ class Cernox1070:
             return [self._excitation_current(r) for r in resistance]
 
     def self_heating_power(self, controller_temperature):
+        """
+        The self heating power because of readout
+        """
         # oldTODO this should use controller_temperature and not correct_temperature
         resistance = 10 ** self.controller_temp_to_logresistence(controller_temperature)
         current = self.excitation_current(resistance)

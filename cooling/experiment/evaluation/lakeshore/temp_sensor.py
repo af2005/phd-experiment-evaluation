@@ -1,3 +1,8 @@
+"""
+The temperature sensor's properties
+"""
+
+
 def systematical_error(temperature: float):
     """
     Temperature readout of Lakeshore Cernox 1070, calibrated temperature sensor

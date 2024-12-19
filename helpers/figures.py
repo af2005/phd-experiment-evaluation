@@ -1,5 +1,10 @@
-import logging
+"""
+Provides general settings for a matplotlib plot as used in my thesis.
+Custom colors, figure size ratios according to the golden ratio.
+"""
 
+import logging
+import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -7,6 +12,9 @@ logging.getLogger("matplotlib.font_manager").disabled = True
 
 
 def initialize():
+    """
+    initializes my defaults for matplotlib plots.
+    """
     plt.rcParams["axes.prop_cycle"] = plt.cycler(
         "color",
         [
@@ -21,21 +29,11 @@ def initialize():
             "#ab6b49",
             "#a947c3",
         ],
-        # ["#444444", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7"]
     )
-    import matplotlib.font_manager
 
-    # matplotlib.font_manager.findSystemFonts(fontpaths=["/Users/afranke/Library/Fonts"], fontext='otf')
     # For pdf export
-    font_path = (
-        # "/Users/afranke/repos/gitlab.alexfranke.de/thesis/dthesis/fonts/source/sans"
-        "/Users/afranke/repos/gitlab.alexfranke.de/thesis/doctoral-thesis/fonts/source/sans"
-        "/SourceSans3-Regular.otf"
-    )
-    matplotlib.font_manager.fontManager.addfont(font_path)
-    prop = matplotlib.font_manager.FontProperties(fname=font_path)
 
-    matplotlib.use("pgf")
+    mpl.use("pgf")
     plt.rcParams["pgf.texsystem"] = "xelatex"
     plt.rcParams["figure.constrained_layout.use"] = True
     plt.rcParams["figure.constrained_layout.w_pad"] = 0.01
@@ -44,14 +42,13 @@ def initialize():
     pgf_with_custom_preamble = {
         "font.family": "sans-serif",  # use serif/main font for text elements
         "font.size": 11,
-        "font.sans-serif": prop.get_name(),
         "text.usetex": True,  # use inline math for ticks
         "pgf.rcfonts": True,  # don't setup fonts from rc parameters
         "pgf.preamble": r"\usepackage{unicode-math}"  # unicode math setup
         r"\renewcommand*\familydefault{\sfdefault}"
         r"\renewcommand*\mathdefault{\mathsf}",
     }
-    matplotlib.rcParams.update(pgf_with_custom_preamble)
+    mpl.rcParams.update(pgf_with_custom_preamble)
 
 
 def set_size(fraction=1, subplots=(1, 1)) -> tuple[float, float]:
@@ -87,6 +84,10 @@ def set_size(fraction=1, subplots=(1, 1)) -> tuple[float, float]:
 
 
 def multiple_formatter(denominator=2, number=np.pi, latex=r"\pi"):
+    """
+    Formatter for a matplotlib axis
+    """
+
     def gcd(a, b):
         while b:
             a, b = b, a % b

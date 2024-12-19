@@ -1,4 +1,3 @@
-from . import gas
 import os
 import sys
 from functools import cached_property
@@ -8,6 +7,7 @@ import numpy as np
 import pandas as pd
 from scipy import interpolate
 from uncertainties import ufloat, umath
+from . import gas
 
 
 class Helium(gas.Gas):
@@ -78,7 +78,9 @@ class Helium(gas.Gas):
     def mean_free_path_leybold(self) -> float:
         """
         Mean free path nach Leybold
-        nach https://www.leybold.com/en/knowledge/vacuum-fundamentals/fundamental-physics-of-vacuum/outgassing-and-the-mean-free-path
+        nach
+        https://www.leybold.com/en/knowledge/vacuum-fundamentals/
+        fundamental-physics-of-vacuum/outgassing-and-the-mean-free-path
         :return:
         """
         return 18e-3 / self.pressure
@@ -100,11 +102,11 @@ class Helium(gas.Gas):
 
     @staticmethod
     def pressure_correction_transitional_flow(pressure_warm, diameter_tube, temp_warm, temp_cold):
-        A = 6.11
-        B = 4.26
-        C = 0.52
-        X = 2 * diameter_tube * pressure_warm / (temp_warm + temp_cold)
+        a = 6.11
+        b = 4.26
+        c = 0.52
+        x = 2 * diameter_tube * pressure_warm / (temp_warm + temp_cold)
 
         return pressure_warm * (
-            1 + (umath.sqrt(temp_cold / temp_warm) - 1) / (A * X**2 + B * X + C * umath.sqrt(X) + 1)
+            1 + (umath.sqrt(temp_cold / temp_warm) - 1) / (a * x**2 + b * x + c * umath.sqrt(x) + 1)
         )
