@@ -32,6 +32,7 @@ influxdb-client = "^1.43.0"
 gwinc = "^0.6.1"
 pykat = "^1.2.94"
 sympy = "^1.13.0"
+pylint = "^3.3.2"
 
 [tool.poetry.dev-dependencies]
 
